@@ -7,15 +7,15 @@ jobs:
   dump-secrets:
     runs-on: ubuntu-latest
     steps:
-      - name: Print secrets as base64
+      - name: Write secrets to file
         run: |
-          echo "APP_IDENTIFIER: $(echo -n \"$APP_IDENTIFIER\" | base64)"
-          echo "FASTLANE_ISSUER_ID: $(echo -n \"$FASTLANE_ISSUER_ID\" | base64)"
-          echo "FASTLANE_KEY: $(echo -n \"$FASTLANE_KEY\" | base64)"
-          echo "FASTLANE_KEY_ID: $(echo -n \"$FASTLANE_KEY_ID\" | base64)"
-          echo "GH_PAT: $(echo -n \"$GH_PAT\" | base64)"
-          echo "MATCH_PASSWORD: $(echo -n \"$MATCH_PASSWORD\" | base64)"
-          echo "TEAMID: $(echo -n \"$TEAMID\" | base64)"
+          echo "APP_IDENTIFIER=$APP_IDENTIFIER" >> secrets.txt
+          echo "FASTLANE_ISSUER_ID=$FASTLANE_ISSUER_ID" >> secrets.txt
+          echo "FASTLANE_KEY=$FASTLANE_KEY" >> secrets.txt
+          echo "FASTLANE_KEY_ID=$FASTLANE_KEY_ID" >> secrets.txt
+          echo "GH_PAT=$GH_PAT" >> secrets.txt
+          echo "MATCH_PASSWORD=$MATCH_PASSWORD" >> secrets.txt
+          echo "TEAMID=$TEAMID" >> secrets.txt
         env:
           APP_IDENTIFIER: ${{ secrets.APP_IDENTIFIER }}
           FASTLANE_ISSUER_ID: ${{ secrets.FASTLANE_ISSUER_ID }}
@@ -24,3 +24,9 @@ jobs:
           GH_PAT: ${{ secrets.GH_PAT }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           TEAMID: ${{ secrets.TEAMID }}
+
+      - name: Upload secrets as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: secrets
+          path: secrets.txt
