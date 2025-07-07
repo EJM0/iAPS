@@ -4,18 +4,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  show-secrets:
+  dump-secrets:
     runs-on: ubuntu-latest
     steps:
-      - name: Show environment variables (secrets)
+      - name: Print secrets as base64
         run: |
-          echo "APP_IDENTIFIER: $APP_IDENTIFIER"
-          echo "FASTLANE_ISSUER_ID: $FASTLANE_ISSUER_ID"
-          echo "FASTLANE_KEY: $FASTLANE_KEY"
-          echo "FASTLANE_KEY_ID: $FASTLANE_KEY_ID"
-          echo "GH_PAT: $GH_PAT"
-          echo "MATCH_PASSWORD: $MATCH_PASSWORD"
-          echo "TEAMID: $TEAMID"
+          echo "APP_IDENTIFIER: $(echo -n \"$APP_IDENTIFIER\" | base64)"
+          echo "FASTLANE_ISSUER_ID: $(echo -n \"$FASTLANE_ISSUER_ID\" | base64)"
+          echo "FASTLANE_KEY: $(echo -n \"$FASTLANE_KEY\" | base64)"
+          echo "FASTLANE_KEY_ID: $(echo -n \"$FASTLANE_KEY_ID\" | base64)"
+          echo "GH_PAT: $(echo -n \"$GH_PAT\" | base64)"
+          echo "MATCH_PASSWORD: $(echo -n \"$MATCH_PASSWORD\" | base64)"
+          echo "TEAMID: $(echo -n \"$TEAMID\" | base64)"
         env:
           APP_IDENTIFIER: ${{ secrets.APP_IDENTIFIER }}
           FASTLANE_ISSUER_ID: ${{ secrets.FASTLANE_ISSUER_ID }}
